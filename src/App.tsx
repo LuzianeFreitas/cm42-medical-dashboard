@@ -1,14 +1,25 @@
-import { SideBar } from './components/SideBar';
-import { Content } from  './components/Content';
+import { BrowserRouter } from 'react-router-dom';
+import RoutesMedical from './Routes';
+import SideBar from './components/SideBar';
+import { ScheduleProvider } from './hooks/useSchedule';
+import GlobalStyles from './styles/global';
+import {Container} from './styles/app';
 
-import './styles/global.css';
 
-function App() {
+const App = (): JSX.Element => {
+
   return (
-    <div  style={{ display: 'flex', flexDirection: 'row' }}>
-      <SideBar/>
-      <Content/>
-    </div>
+    <BrowserRouter>
+      <ScheduleProvider>
+        <GlobalStyles/>
+        <Container>
+          <SideBar/>
+          <>
+            <RoutesMedical/>
+          </>
+        </Container>
+      </ScheduleProvider>
+    </BrowserRouter>
   );
 }
 

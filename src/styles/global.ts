@@ -1,6 +1,10 @@
+import { createGlobalStyle } from 'styled-components';
+
+export default createGlobalStyle`
 :root {
     --background: #f7f8fc;
     --white: #FBFBFB;
+    --black: #1c1c1c;
 }
 
 * {
@@ -27,3 +31,4 @@ html {
 button {
     cursor: pointer;
 }
+`;
