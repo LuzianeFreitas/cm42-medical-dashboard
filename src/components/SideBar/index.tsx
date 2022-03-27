@@ -6,20 +6,10 @@ import { useSchedule } from '../../hooks/useSchedule';
 import { useState } from 'react';
 
 const SideBar = (): JSX.Element => {
-    const { patients, getPatientInfo } = useSchedule();
+    const { patients } = useSchedule();
     
-    const [selectedPatientId, setSelectedPatientId] = useState<number>();
-    
-    const selectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {  
-        var value = event.target.value;
-        
-        if(value != undefined) {
-            const id = parseInt(value);
-            setSelectedPatientId(id);
-            getPatientInfo(id);
-        }
-    };  
-    
+    const [selectedPatientId, setSelectedPatientId] = useState<number>(1);
+
 
     return (
         <Container>
@@ -28,16 +18,14 @@ const SideBar = (): JSX.Element => {
             </Link>
 
             <PatientInfo to={selectedPatientId != undefined ? `/patient/${selectedPatientId}`: '/'}>
-                <select name="selectPatient" id="selectPatient" onChange={selectChange}>
-                    <option value="">Patients</option>
+                <select name="selectPatient" id="selectPatient" onChange={event => setSelectedPatientId(parseInt(event.target.value))}>
                     {
                         patients.map(patient => (
-                        <option key={patient.id} value={patient.id}>{patient.name}</option>
+                            <option key={patient.id} value={patient.id}>{patient.name}</option>
                         )) 
                     }
                 </select>
             </PatientInfo>
-
         </Container>
     );
 };

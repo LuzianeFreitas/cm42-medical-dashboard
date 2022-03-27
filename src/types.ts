@@ -6,7 +6,7 @@ export interface Patients {
     birthday: string,
     insurancePlan: InsurancePlan,
     age: number,
-    appointments: []
+    appointments: Array<Appointments>
 };
 
 export interface Appointments {
