@@ -14,7 +14,6 @@ const ItenTab = ({appointmentId}: Props): JSX.Element => {
         if(!appointmentId) return;
 
         api.get(`appointments/${appointmentId}`).then(({data}) => {
-            console.log(data);
             setAppointmentInfo(data);
         }).catch()
     }, [appointmentId]);

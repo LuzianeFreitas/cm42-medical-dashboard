@@ -15,18 +15,16 @@ const Patient = (): JSX.Element => {
     const { id } = useParams();
     const { appointments } = useSchedule();
     const [patientInfo, setPatientInfo] = useState<Patients>({} as Patients);
+    const [isLoading, setIsLoading] = useState(true);
     
     
     useEffect(() => {
         api.get(`patients/${Number(id)}`).then(({data}) => {
-            
-            console.log(data);
         
             const age = getAgePatient(data.birthday);
 
             const appointmentPatient = getPatientAppointments(Number(id));   
 
-            console.log(appointmentPatient);
 
             const infoPatients = {
                 ...data,
@@ -34,17 +32,10 @@ const Patient = (): JSX.Element => {
                 appointments: appointmentPatient,
             }       
             
-            console.log(infoPatients.appointments);
-
             setPatientInfo(infoPatients);
-
-            // let patientFormat = {
-            //     ...patientInfo,
-            //     documentFormatted: formatDocument(data.document),
-            //     healthSystemIdFormatted: formatHealthSystemId(data.healthSystemId)
-            // }
-        })            
-    }, [id]);
+            setIsLoading(false);
+        })           
+    }, [id,isLoading]);
 
     const getAgePatient = (date: string) => {
         let arrayDate = date.split('T');
@@ -87,6 +78,17 @@ const Patient = (): JSX.Element => {
         return dateFormated
     }
 
+    if(isLoading) {
+        return (
+            <Container>
+                <h3>
+                    Dashboard
+                </h3>
+
+                Loading patient's info...
+            </Container>
+        );
+    }
     
     return (
         <Container>
