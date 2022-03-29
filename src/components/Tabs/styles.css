@@ -1,0 +1,41 @@
+.Tabs {
+    width: 100%;
+    height: auto;
+
+    min-height: 350px;
+    border-radius: 5px;
+    box-shadow: 9px 10px 10px -10px rgba(0,0,0,0.4);
+}
+
+ul.nav {
+    display: flex;
+    
+}
+
+ul.nav li {
+    padding: 1rem;
+    margin-right: 0.5rem;
+    list-style: none;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    background: #eaebef;
+}
+
+ul.nav li.active {
+    background: var(--white);
+}
+
+.outlet {
+    width: 100%;
+    min-height: 350px;
+    background: var(--white);
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    padding: 1rem;
+}
+
+.section-item {
+    display: flex;
+    justify-content: space-around;
+
+}

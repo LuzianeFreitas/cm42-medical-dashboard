@@ -11,9 +11,22 @@ export const Container = styled.nav`
 
     display: flex;
     flex-direction: column;
+
+    @media(max-width: 768px) {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        height: 80px;
+        width: 100%;
+    }
     
 `;
 
-export const PatientInfo = styled(Link)`
+export const LinkPatient = styled(Link)`
     margin-top: 1rem;
+
+    @media(max-width: 768px) {
+        margin-top: 0;
+    }
 `;
+

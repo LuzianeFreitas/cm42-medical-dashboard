@@ -1,34 +1,50 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { api } from '../../services/api';
-import { useSchedule } from '../../hooks/useSchedule';
-import { Appointments, Patients } from '../../types';
 
-import { Container, Header, InfoPatient, Title, Informacao  } from "./styles";
+import { api } from '../../services/api';
+
+import { useSchedule } from '../../hooks/useSchedule';
+
+import { Patients } from '../../types';
+
+import Tabs from "../../components/Tabs";
+import { Container, Header, InfoPatient, Title, Informacao, Detail  } from "./styles";
 
 const Patient = (): JSX.Element => {
+
+    const { id } = useParams();
     const { appointments } = useSchedule();
     const [patientInfo, setPatientInfo] = useState<Patients>({} as Patients);
-    const { id } = useParams();
-
+    
+    
     useEffect(() => {
-        const fetchPatientInfo = async () => {
-            const { data } = await api.get(`patients/${id}`)
-
+        api.get(`patients/${Number(id)}`).then(({data}) => {
+            
+            console.log(data);
+        
             const age = getAgePatient(data.birthday);
 
-            const appointmentPatient = getPatientAppointments(Number(id));
-            
+            const appointmentPatient = getPatientAppointments(Number(id));   
+
+            console.log(appointmentPatient);
+
             const infoPatients = {
                 ...data,
                 age: age,
-                appointments: appointmentPatient
-            }            
+                appointments: appointmentPatient,
+            }       
             
+            console.log(infoPatients.appointments);
+
             setPatientInfo(infoPatients);
-        }
-        fetchPatientInfo()
-    }, [id])
+
+            // let patientFormat = {
+            //     ...patientInfo,
+            //     documentFormatted: formatDocument(data.document),
+            //     healthSystemIdFormatted: formatHealthSystemId(data.healthSystemId)
+            // }
+        })            
+    }, [id]);
 
     const getAgePatient = (date: string) => {
         let arrayDate = date.split('T');
@@ -43,10 +59,10 @@ const Patient = (): JSX.Element => {
         return age;
     }
 
-    const getPatientAppointments = (patientId: number) => {
+    const getPatientAppointments = (patientId: number) => {       
         let allAppointments = [...appointments];
       
-        allAppointments = allAppointments.filter(appointments => (appointments.patientId == patientId));
+        allAppointments = allAppointments.filter(appointments => (appointments.patientId === patientId));
         
         return allAppointments;    
     }
@@ -70,6 +86,7 @@ const Patient = (): JSX.Element => {
 
         return dateFormated
     }
+
     
     return (
         <Container>
@@ -81,33 +98,35 @@ const Patient = (): JSX.Element => {
                 <InfoPatient>
                     <h5>Patient Info</h5>
                     
-                    <Title>{patientInfo.name}</Title>
+                    <Title>{patientInfo?.name}</Title>
                     <Informacao>
-                        {formatDocument(patientInfo.document)} 
+                        {patientInfo?.document ? formatDocument(patientInfo?.document) : ""} 
 
-                        <span>{patientInfo.age} y/o</span>  
+                        <span>{patientInfo?.age} y/o</span>  
                     </Informacao>
                     
                 </InfoPatient>
 
                 <InfoPatient>
                     <h5>Plan Info</h5>
-                    
-                    <Title>{patientInfo.insurancePlan}</Title>
+                    <Title>{patientInfo?.insurancePlan}</Title>
                     <Informacao>
-                        {formatHealthSystemId(patientInfo.healthSystemId)} 
+                        {patientInfo?.healthSystemId ? formatHealthSystemId(patientInfo?.healthSystemId) : ""} 
                     </Informacao>
                 </InfoPatient>
 
                 <InfoPatient>
                     <h5>Latest App.</h5>
-                    <Title>{patientInfo.appointments[0].specialty}</Title>
+                    <Title>{patientInfo?.appointments ? patientInfo?.appointments[0].specialty : ""}</Title>
                     <Informacao>
-                        {formatDate(patientInfo.appointments[0].startTime)}
+                        {patientInfo?.appointments ? formatDate(patientInfo?.appointments[0].startTime) : ""}
                     </Informacao>
                 </InfoPatient>
             </Header>
 
+            <Detail>
+                <Tabs type={patientInfo}/>
+            </Detail>
         </Container>
     );
 };

@@ -1,0 +1,23 @@
+.container-header {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+.container-description {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+.container-notes span {
+    font-weight: bold;
+    text-transform: capitalize;
+}
+
+.container-notes p {
+    margin-top: 1rem;
+}

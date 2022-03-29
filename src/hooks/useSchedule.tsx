@@ -15,19 +15,26 @@ const ScheduleContext = createContext<ScheduleContextData>({} as ScheduleContext
 
 export function ScheduleProvider({ children }: ScheduleProviderProps): JSX.Element {
     const [patients, setPatients] = useState<Patients[]>([]);
-    const [patientInfo, setPatientInfo] = useState<Patients>({} as Patients);
     const [appointments, setAppointments] = useState<Appointments[]>([]);
 
-    useEffect(() => {
-        api.get('patients').then(response => {
-            setPatients(response.data);
-        });
+    useEffect(() => {   
+        api.get('patients').then(({data}) => {
+            setPatients(data);
+            console.log(data);
+            
+        }).catch((error) => {
+            console.log(error);
+        })
 
-        api.get('appointments').then(response => {
-            setAppointments(response.data);            
-        });
-        
+        api.get('appointments').then(({data}) => {
+            setAppointments(data); 
+            console.log(data);
+            
+        }).catch((error) => {
+            console.log(error);
+        })
     }, []);
+
 
     return (
         <ScheduleContext.Provider

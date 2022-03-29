@@ -12,6 +12,12 @@ export const Header = styled.header`
     justify-content: space-between;
 
     margin-top: 3rem;
+
+    @media(max-width: 768px) {
+        display: flex;
+        flex-wrap: wrap;
+        margin-top: 1.5rem;
+    }
 `;
 
 export const InfoPatient = styled.section`
@@ -25,11 +31,22 @@ export const InfoPatient = styled.section`
     height: auto;
 
     margin-right: 0.5rem;
+
+    @media(max-width: 768px) {
+        margin-right: 0;
+        margin-bottom: 0.5rem;
+        width: 100%;
+    }
 `;
 
 export const Title = styled.h2`
     margin-top: 1rem;
     margin-bottom: 0.2rem;
+    font-size: 1.5rem;
+
+    @media(max-width: 768px) {
+        font-size: 1.4rem;
+    }
 `;
 
 export const Informacao = styled.div`
@@ -38,4 +55,8 @@ export const Informacao = styled.div`
     justify-content: space-between;
 
     font-size: 14px;
+`;
+
+export const Detail = styled.main`
+    margin-top: 1.5rem;
 `;
