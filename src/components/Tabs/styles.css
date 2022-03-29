@@ -34,8 +34,21 @@ ul.nav li.active {
     padding: 1rem;
 }
 
-.section-item {
-    display: flex;
-    justify-content: space-around;
 
+.section-appointment {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0.5rem;
+
+    cursor: pointer;
+}
+
+.section-appoitment-time {
+    display: flex;
+}
+
+.section-appoitment-time span {
+    margin-right: 1rem;
 }

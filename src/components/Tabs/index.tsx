@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { Patients } from '../../types';
+import { Patients, Status } from '../../types';
 import ItenTab from "../ItenTab";
+import IconStatus from "../IconStatus";
 
 import "./styles.css";
 
@@ -12,41 +13,34 @@ const Tabs = ({type}: Props): JSX.Element => {
     const [activeTab, setActiveTab] = useState<string>("history");
 
     const [appointmentId, setAppointmentId] = useState<number|null>(null);
-
-
+    
+    
     const handleRecentTab = () => {
         setActiveTab("recent");
         return;
     }
-
-    // const handleUpcomingTab = () => {
-    //     setActiveTab("upcoming");
-    // }
-
-    // const handleHistoryTab = () => {
-    //     setActiveTab("history");
-    // }
 
     function handleNotes(appointmentId: number){
         setAppointmentId(appointmentId);
         return;        
     }
 
+
     return (
         <div className="Tabs">
             <ul className="nav">
                 <li className={activeTab === "history" ? "active" : ""} onClick={handleRecentTab}>History</li>
-                {/* <li className={activeTab === "upcoming" ? "active" : ""} onClick={handleUpcomingTab}>Upcoming</li>
-                <li className={activeTab === "history" ? "active" : ""} onClick={handleHistoryTab}>History</li> */}
             </ul>
             <div className="outlet">
                 <div className="sectionRecents">
                     {type?.appointments?.map((appointment) => (
-                        <div className="section-item" key={appointment.id}>
-                            <span onClick={() => handleNotes(appointment.id)}>ver</span>
-                            <span>{appointment.startTime}</span>
+                        <div className="section-appointment" key={appointment.id} onClick={() => handleNotes(appointment.id)}>
+                            <div className="section-appoitment-time">
+                                <span>ver</span>
+                                <span>{appointment.startTime}</span>
+                            </div>
                             <span>{appointment.type}</span>
-                            <span className="tag-status">{appointment.status}</span>
+                            <IconStatus status={appointment.status.toString()}/>
                         </div> 
                     ))}
 

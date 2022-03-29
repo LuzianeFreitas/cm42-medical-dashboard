@@ -5,6 +5,12 @@ export default createGlobalStyle`
     --background: #f7f8fc;
     --white: #FBFBFB;
     --black: #1c1c1c;
+
+    --absent: #e16259;
+    --completed: #41cc72;
+    --cancelled: #808080;
+    --pending: #e1920e;
+
 }
 
 * {
