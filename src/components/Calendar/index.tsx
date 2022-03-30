@@ -1,15 +1,23 @@
-import {startOfWeek,format,addDays, startOfMonth, endOfMonth,endOfWeek, subMonths, addMonths} from "date-fns";
+import {isSameWeek,isSaturday,isSunday,getDay, startOfWeek,format,addDays, startOfMonth, endOfMonth,endOfWeek, subMonths, addMonths, isMonday, getHours, getMinutes} from "date-fns";
 import { useState } from "react";
+import { useSchedule } from "../../hooks/useSchedule";
 
 
 import "./style.css";
 
 const Calendar = (): JSX.Element => {
+    const { appointments } = useSchedule();
+    const currentDate = new Date;
+    
+    
     const [currentMonth, setCurrentMonth] = useState(new Date());
     const [selectedDate, setSelectedDate] = useState(new Date());
+
+
     console.log(currentMonth);
     
     const showHeaderCalendar = () =>{
+        console.log(appointments);
         const dateFormat = "MMMM yyyy";
 
         return (
@@ -98,12 +106,105 @@ const Calendar = (): JSX.Element => {
         setCurrentMonth(addMonths(currentMonth,1))
     }
 
+    const renderCalendar = () => {
+        let hour = 9;
+        let min = 0;
+        let calendarRow = [];
+        let calendarCol = [];
+
+        
+        console.log(compareWeeks());
+
+        let weeklyAppointments = compareWeeks();
+        
+        calendarRow.push(getHeaderCalendarDays());
+        for( let hourIndex = 0; hourIndex < 19; hourIndex++) {
+            calendarCol.push(
+                <div className="col">
+                    { hour +':'+ min}
+                </div>
+            )
+            for(let dayIndex = 0; dayIndex < 5 ; dayIndex++) {
+                let appointment = "";
+                weeklyAppointments.forEach(element => {
+                    let dateFormatted = element.startTime.replace('T', ' ').replace('.592Z', '');
+                    let date = new Date(dateFormatted);
+                    if(getDay(date) == dayIndex+1) {
+                        if(getHours(date) == hour && getMinutes(date) == min)
+                            appointment = element.description
+                    }
+                })
+
+                calendarCol.push(
+                    <div className="col">
+                        <div className="cell">
+                        {                        
+                            appointment
+                        }
+                        </div>
+                </div>
+                )
+            }
+            calendarRow.push(
+                <div className="row">
+                    {calendarCol}
+                </div>
+            )
+            
+            if(min == 0) {
+                min = 30;
+            } else {
+                min = 0;
+                hour++;
+            }
+            calendarCol = [];
+
+        }
+
+        return <div>{calendarRow}</div>
+        
+    }
+
+    const getHeaderCalendarDays = () => {
+        let daysWeek = [ '','Mon','Tue','Wed','Thu','Fri'];
+
+        let headerWeek = [];
+
+        for(let dayIndex = 0; dayIndex < 6 ; dayIndex++) {
+            headerWeek.push(
+                <div className="col">
+                    {daysWeek[dayIndex]}
+                </div>
+            )     
+        }
+
+        return (
+            <div className="row">
+               {headerWeek}
+            </div>
+        );
+    }
+
+    const compareWeeks = () => {
+        return appointments?.filter(appointment => {
+            let dateAppointment = new Date(appointment.startTime)
+            const currentWeek = isSameWeek(dateAppointment,currentDate,{weekStartsOn: 1});
+            if(currentWeek && (!isSaturday(dateAppointment)) && (!isSunday(dateAppointment))) {
+                return true;
+            }
+
+            return false;
+        })
+    }
+
     return(
         <div>
             {showHeaderCalendar()}
             {showDaysCalendar()}
             {showHoursDay()}
             {showCellsCalendar()}
+
+            {renderCalendar()}
         </div>
     );
 };
