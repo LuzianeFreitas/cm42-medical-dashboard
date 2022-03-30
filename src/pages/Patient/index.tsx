@@ -6,6 +6,7 @@ import { api } from '../../services/api';
 import { useSchedule } from '../../hooks/useSchedule';
 
 import { Patients } from '../../types';
+import { formatDate } from '../../utils/format';
 
 import Tabs from "../../components/Tabs";
 import { Container, Header, InfoPatient, Title, Informacao, Detail  } from "./styles";
@@ -68,16 +69,6 @@ const Patient = (): JSX.Element => {
         return healthSystemId.replace(/(\d{3})(\d{3})(\d{4})/g,"\$1.\$2.\/\$3");
     }
 
-    const formatDate = (date: string) => {
-        let arrayDate = date.split('T');
-        let dateString = arrayDate[0];
-        arrayDate = dateString.split('-');
-
-        let dateFormated = arrayDate[2]+"/"+arrayDate[1]+"/"+arrayDate[0];
-
-        return dateFormated
-    }
-
     if(isLoading) {
         return (
             <Container>
@@ -100,28 +91,28 @@ const Patient = (): JSX.Element => {
                 <InfoPatient>
                     <h5>Patient Info</h5>
                     
-                    <Title>{patientInfo?.name}</Title>
+                    <Title>{patientInfo.name}</Title>
                     <Informacao>
-                        {patientInfo?.document ? formatDocument(patientInfo?.document) : ""} 
+                        {patientInfo.document ? formatDocument(patientInfo?.document) : ""} 
 
-                        <span>{patientInfo?.age} y/o</span>  
+                        <span>{patientInfo.age} y/o</span>  
                     </Informacao>
                     
                 </InfoPatient>
 
                 <InfoPatient>
                     <h5>Plan Info</h5>
-                    <Title>{patientInfo?.insurancePlan}</Title>
+                    <Title>{patientInfo.insurancePlan}</Title>
                     <Informacao>
-                        {patientInfo?.healthSystemId ? formatHealthSystemId(patientInfo?.healthSystemId) : ""} 
+                        {patientInfo.healthSystemId ? formatHealthSystemId(patientInfo.healthSystemId) : ""} 
                     </Informacao>
                 </InfoPatient>
 
                 <InfoPatient>
                     <h5>Latest App.</h5>
-                    <Title>{patientInfo?.appointments ? patientInfo?.appointments[0].specialty : ""}</Title>
+                    <Title>{patientInfo.appointments ? patientInfo?.appointments[0].specialty : ""}</Title>
                     <Informacao>
-                        {patientInfo?.appointments ? formatDate(patientInfo?.appointments[0].startTime) : ""}
+                        {patientInfo.appointments ? formatDate(patientInfo.appointments[0].startTime) : ""}
                     </Informacao>
                 </InfoPatient>
             </Header>

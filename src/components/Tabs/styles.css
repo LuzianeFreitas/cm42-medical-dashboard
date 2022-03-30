@@ -36,13 +36,26 @@ ul.nav li.active {
 
 
 .section-appointment {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+
+
+    height: 40px;
+    padding: 0.2rem;
+    cursor: pointer;
+}
+
+.section-appointment span {
+    align-items: center;
+} 
+
+.section-appointment .type-appointment {
+    visibility:visible;
+}
+
+.section-appointment span.type-appointment {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-
-    padding: 0.5rem;
-
-    cursor: pointer;
 }
 
 .section-appoitment-time {
@@ -51,4 +64,25 @@ ul.nav li.active {
 
 .section-appoitment-time span {
     margin-right: 1rem;
+}
+
+.status-appointment {
+    display: flex;
+    justify-content: center;
+    visibility:visible;
+}
+
+@media(max-width: 458px) {
+    .section-appointment span.type-appointment {
+        visibility: hidden;
+    }
+
+    .status-appointment {
+        visibility: hidden;
+    }
+
+    .section-appoitment-time {
+        grid-column-start: 1;
+        grid-column-end: 4;
+    }
 }

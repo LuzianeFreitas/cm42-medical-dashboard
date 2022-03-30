@@ -8,7 +8,10 @@ const IconStatus = ({status}: Props) => {
     
     const modelIcon = {
         borderRadius: '5px',
-        padding: '5px'
+        padding: '5px',
+        width: '100px',
+        display: 'flex',
+        justifyContent: 'center',
     }
 
     const absent = {
