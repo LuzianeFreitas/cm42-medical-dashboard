@@ -1,4 +1,4 @@
-import {isSameWeek,isSaturday,isSunday,getDay, startOfWeek,format,addDays, startOfMonth, endOfMonth,endOfWeek, subMonths, addMonths, isMonday, getHours, getMinutes} from "date-fns";
+import {isSameWeek,isSaturday,isSunday,getDay,isBefore, isAfter, startOfWeek,format,addDays, startOfMonth, endOfMonth,endOfWeek, subMonths, addMonths, isMonday, getHours, getMinutes} from "date-fns";
 import { useState } from "react";
 import { useSchedule } from "../../hooks/useSchedule";
 
@@ -128,11 +128,33 @@ const Calendar = (): JSX.Element => {
                 let appointment = "";
                 weeklyAppointments.forEach(element => {
                     let dateFormatted = element.startTime.replace('T', ' ').replace('.592Z', '');
-                    let date = new Date(dateFormatted);
-                    if(getDay(date) == dayIndex+1) {
-                        if(getHours(date) == hour && getMinutes(date) == min)
+                    
+                    let dateStart = new Date(dateFormatted);
+                    let currentDate = new Date(dateFormatted);
+                    currentDate.setHours(hour);
+                    currentDate.setMinutes(min);
+                    
+                    if(getDay(dateStart) == dayIndex+1) {
+                        if(getHours(dateStart) == hour && getMinutes(dateStart) == min)
                             appointment = element.description
+                        
+                        
+                        if(element.endTime) {
+                            let dateEndFormatted = element.endTime.replace('T', ' ').replace('.592Z', '');
+                            let dateEnd = new Date(dateEndFormatted);
+
+                            if(getHours(dateEnd) == hour && getMinutes(dateEnd) == min)
+                                appointment = element.description
+
+                            
+                            
+                            if(isAfter(currentDate, dateStart) && isBefore(currentDate, dateEnd)) {
+                                appointment = element.description
+                            }
+                        }
                     }
+
+
                 })
 
                 calendarCol.push(
