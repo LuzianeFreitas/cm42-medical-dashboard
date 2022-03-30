@@ -1,0 +1,82 @@
+.container-history {
+    width: 100%;
+    background-color: var(--white);
+    border-radius: 5px;
+    box-shadow: 9px 10px 10px -10px rgba(0,0,0,0.4);
+    padding: 1rem;
+    margin-top: 1rem;
+}
+
+.container-history h4 {
+    margin-bottom: 1rem;
+}
+
+.content-history {
+    border: 1px solid var(--black);
+    border-radius: 5px;
+    padding: 0.5rem;
+}
+
+.patient-appointment {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+
+    align-items: center;
+
+    cursor: pointer;
+
+    border-bottom: 1px solid var(--black);
+
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+}
+
+.patient-appointment:last-child {
+    border: none;
+}
+
+.type-appointment,
+.name-patient,
+.status-appointment,
+.date-time-appointment {
+    visibility: visible;
+}
+
+.date-time-appointment .time-appointment {
+    margin-left: 0.2rem;
+}
+
+.type-appointment {
+    display: flex;
+    justify-content: center;
+}
+
+@media(max-width: 600px) {
+    .type-appointment,
+    .status-appointment {
+        visibility: hidden;
+    }
+
+    .patient-appointment {
+        grid-template-columns: 1fr 1fr;
+        align-items: center;
+    }
+
+    .date-time-appointment {
+        grid-column-start: 0;
+        grid-column-end: 1;
+
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+
+    }
+
+    .name-patient {
+        grid-column-start: 2;
+
+        display: flex;
+        justify-content: center;
+    }
+
+}
