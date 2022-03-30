@@ -1,0 +1,23 @@
+.calendar-header {
+    display: flex;
+}
+
+.cell {
+    display: flex;
+    flex-direction: row;
+}
+
+.row {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.col {
+    flex-grow: 1;
+    flex-basis: 0;
+    max-width: 100%;
+}

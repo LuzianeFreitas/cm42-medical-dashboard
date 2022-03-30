@@ -1,5 +1,6 @@
 import { Container } from "./styles"; 
 import History from "../../components/History";
+import Calendar from "../../components/Calendar";
 
 const Home = (): JSX.Element => {
     return(
@@ -7,7 +8,7 @@ const Home = (): JSX.Element => {
             <h3>
                 Dashboard
             </h3>
-            
+            <Calendar/>
             <History/>
         </Container>
     );
