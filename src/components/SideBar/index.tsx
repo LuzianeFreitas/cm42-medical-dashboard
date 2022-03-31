@@ -10,15 +10,14 @@ const SideBar = (): JSX.Element => {
     
     const [selectedPatientId, setSelectedPatientId] = useState("");    
 
-    const handleChange = (event: ChangeEvent<HTMLSelectElement>) => {
-        setSelectedPatientId(event.target.value);
-
-        return;
-    }
-
     const linkHome = {
         textDecoration: 'none',
         color: '#1c1c1c',
+    }
+
+    const linkPatientInfo = {
+        width: '200px',
+        padding: '0.3rem',
     }
 
     return (
@@ -28,7 +27,7 @@ const SideBar = (): JSX.Element => {
             </Link>
 
             <LinkPatient to={`/patient/${selectedPatientId}`}>
-                <select name="selectPatient" id="selectPatient" onChange={handleChange} defaultValue="default">
+                <select style={linkPatientInfo} name="selectPatient" id="selectPatient" onChange={(event) => setSelectedPatientId(event.target.value)} defaultValue="default">
                         <option value="default" aria-disabled disabled>Select a Patient</option>
                     {
                         patients.map(patient => (
