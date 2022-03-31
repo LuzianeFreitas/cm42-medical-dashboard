@@ -1,12 +1,14 @@
 import {isSameWeek, isSaturday, isSunday, getDay, isBefore, isAfter, getHours, getMinutes} from "date-fns";
+import { Link } from "react-router-dom";
 import { useSchedule } from "../../hooks/useSchedule";
 import { formatDateCalendar, formatHourCalendar } from "../../utils/format";
+
 
 
 import "./style.css";
 
 const Calendar = (): JSX.Element => {
-    const { appointments } = useSchedule();
+    const { appointments, patients } = useSchedule();
     const currentDate = new Date;
     
 
@@ -27,7 +29,8 @@ const Calendar = (): JSX.Element => {
             );
 
             for(let dayIndex = 0; dayIndex < 5 ; dayIndex++) {
-                let appointment = "";
+                let appointmentDescription = "";
+                let patientId = "";
 
                 weeklyAppointments.forEach(element => {
                     let dateFormatted = formatDateCalendar(element.startTime);
@@ -43,8 +46,10 @@ const Calendar = (): JSX.Element => {
                         let hourAppointmentStart = getHours(dateStart);
                         let minutesAppointmentStart = getMinutes(dateStart);
 
-                        if(hourAppointmentStart == hour && minutesAppointmentStart == min)
-                            appointment = element.description
+                        if(hourAppointmentStart == hour && minutesAppointmentStart == min) {
+                            appointmentDescription = element.description;
+                            patientId = element.patientId.toString();
+                        }
                         
                         if(element.endTime) {
                             let dateEndFormatted = formatDateCalendar(element.endTime)
@@ -54,18 +59,31 @@ const Calendar = (): JSX.Element => {
                             let intervalStart = isAfter(currentDateWeekly, dateStart);
                             let intervalEnd = isBefore(currentDateWeekly, dateEnd);
 
-                            if(hourAppointmentEnd == hour && minuteAppointmentEnd == min)
-                                appointment = element.description
+                            if(hourAppointmentEnd == hour && minuteAppointmentEnd == min) {
+                                appointmentDescription = element.description
+                                patientId = element.patientId.toString();
+                            }
 
-                            if(intervalStart && intervalEnd) 
-                                appointment = element.description
+                            if(intervalStart && intervalEnd){ 
+                                appointmentDescription = element.description;
+                                patientId = element.patientId.toString();
+                            }
                         }
                     }
                 })
 
                 calendarCol.push(
-                    <div className={`col cell-calendar ${appointment.length > 0 ? 'active-card' : ''}`}>
-                        {appointment}
+                    <div 
+                        className={`col cell-calendar ${appointmentDescription.length > 0 ? 'active-card' : ''}`}
+                    >
+                        <Link to={`/patient/${patientId}`} className="format-link">
+                            <span className="name-patient">
+                                [{getPatientName(patientId)}]
+                            </span>
+                            <span className="description">
+                                {appointmentDescription}
+                            </span>
+                        </Link>
                     </div>
                 );
             }
@@ -118,6 +136,21 @@ const Calendar = (): JSX.Element => {
 
             return false;
         })
+    }
+
+    const getPatientName = (patientId: string) => {
+        let patientIdNumber = Number(patientId);
+        let patientName = "";
+
+        patients?.filter(patient => { 
+            
+            if(patientIdNumber === patient.id) {
+                patientName = patient.name.toString();
+                return;
+            }
+        });
+
+        return patientName;
     }
 
     return(

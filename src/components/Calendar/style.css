@@ -35,6 +35,7 @@
 
     text-align: center;
     padding: 0.5rem;
+    font-size: 13px;
 }
 
 .header-calendar {
@@ -55,6 +56,22 @@
     color: var(--white);
 }
 
+.format-link {
+    text-decoration: none;
+    color: var(--white);
+
+    display: flex;
+    flex-direction: column;
+}
+
+.name-patient {
+    font-size: 14px;
+}
+
+.description {
+    visibility: visible;
+}
+
 @media(max-width: 600px) {
     .container-body-calendar {
         min-width: 550px;
@@ -64,5 +81,13 @@
     .container-calendar {
         min-width: 320px;
         overflow-x: auto;
+    }
+
+    .description {
+        visibility: hidden;
+    }
+
+    .cell-calendar {
+        min-height: 20px;
     }
 }
