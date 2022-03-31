@@ -44,7 +44,7 @@ const Calendar = (): JSX.Element => {
 
                     if(date == dayIndex+1) {
                         let hourAppointmentStart = getHours(dateStart);
-                        let minutesAppointmentStart = getMinutes(dateStart);
+                        let minutesAppointmentStart = getMinutes(dateStart);                       
 
                         if(hourAppointmentStart == hour && minutesAppointmentStart == min) {
                             appointmentDescription = element.description;

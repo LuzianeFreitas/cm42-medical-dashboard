@@ -3,13 +3,14 @@ import { Link } from 'react-router-dom';
 import { Container, LinkPatient } from './styles';
 
 import { useSchedule } from '../../hooks/useSchedule';
-import { ChangeEvent, useState } from 'react';
+import { useState } from 'react';
 
 const SideBar = (): JSX.Element => {
     const { patients } = useSchedule();
     
     const [selectedPatientId, setSelectedPatientId] = useState("");    
 
+    
     const linkHome = {
         textDecoration: 'none',
         color: '#1c1c1c',
@@ -27,14 +28,16 @@ const SideBar = (): JSX.Element => {
             </Link>
 
             <LinkPatient to={`/patient/${selectedPatientId}`}>
+
                 <select style={linkPatientInfo} name="selectPatient" id="selectPatient" onChange={(event) => setSelectedPatientId(event.target.value)} defaultValue="default">
                         <option value="default" aria-disabled disabled>Select a Patient</option>
                     {
-                        patients.map(patient => (
+                        patients?.map(patient => (
                             <option key={patient.id} value={patient.id}>{patient.name}</option>
                         )) 
                     }
                 </select>
+
             </LinkPatient>            
             
         </Container>

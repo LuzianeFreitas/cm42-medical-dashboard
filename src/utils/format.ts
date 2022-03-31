@@ -8,24 +8,34 @@ export const formatDate = (date: string) => {
     return dateFormated;
 }
 
-export const formatTime = (startTime: string, endTime: string | null) => {
-    let startTimeArray = startTime.split('T');
+export const formatTime = (startTime: string, endTime: string | null) => {  
+    let startTimeArray = startTime.split('T');    
     startTimeArray = startTimeArray[1].split('.');
     let statTimeFormat = startTimeArray[0].substring(0,5);
 
-    if(!endTime) {
-        let endTimeArray = startTime.split('T');
+
+    if(endTime != null) {
+        let endTimeAux = endTime;
+        let endTimeArray = endTimeAux.split('T');
         endTimeArray = endTimeArray[1].split('.');
+        
         let endTimeFormat = endTimeArray[0].substring(0,5);
 
-        return `${statTimeFormat} - ${endTimeFormat}`;
+        let dateString = statTimeFormat +" - "+ endTimeFormat;
+
+        return dateString;
     }
 
     return statTimeFormat;
 }
 
 export const formatDateCalendar = (date: string) => {
-    let dateFormatted = date.replace('T', ' ').replace('.592Z', '');
+    let arrayDate = date.split('T');
+    let day = arrayDate[0];
+    let hour = arrayDate[1].split('.');
+
+    let dateFormatted = day + " " + hour[0];
+
     return dateFormatted;
 }
 

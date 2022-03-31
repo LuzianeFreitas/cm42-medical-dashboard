@@ -27,9 +27,9 @@ export function ScheduleProvider({ children }: ScheduleProviderProps): JSX.Eleme
             setAppointments(data);            
         }).catch(() => {
         })
+        
     }, []);
-
-
+    
     return (
         <ScheduleContext.Provider
             value={{ patients, appointments }}
