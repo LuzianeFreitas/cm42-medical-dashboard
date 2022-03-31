@@ -20,14 +20,12 @@ export function ScheduleProvider({ children }: ScheduleProviderProps): JSX.Eleme
     useEffect(() => {   
         api.get('patients').then(({data}) => {
             setPatients(data);            
-        }).catch((error) => {
-            console.log(error);
+        }).catch(() => {
         })
 
         api.get('appointments').then(({data}) => {
             setAppointments(data);            
-        }).catch((error) => {
-            console.log(error);
+        }).catch(() => {
         })
     }, []);
 

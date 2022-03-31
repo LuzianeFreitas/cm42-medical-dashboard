@@ -1,9 +1,14 @@
-.calendar-header {
-    display: flex;
+.container-calendar {
+    width: 100%;
+    background-color: var(--white);
+    border-radius: 5px;
+    box-shadow: 10px 10px 10px -10px rgba(0,0,0,0.4);
+    padding: 1rem;
+    margin-top: 1rem;
 }
 
-.cell {
-    border: 1px solid var(--black);
+.container-body-calendar {
+    margin-top: 1rem;
 }
 
 .row {
@@ -11,12 +16,53 @@
     padding: 0;
     display: flex;
     flex-direction: row;
-    flex-wrap: wrap;
-    width: 100%;
+    /* flex-wrap: wrap; */
+    /* width: 100%; */
 }
 
 .col {
     flex-grow: 1;
     flex-basis: 0;
-    max-width: 100%;
+    max-width: 50%;
+    /* min-width: 50%; */
+}
+
+.cell-calendar {
+    border: 1px dashed #8f8f8f;
+    border-radius: 2px;
+    margin: 1.5px;
+    min-height: 50px;
+
+    text-align: center;
+    padding: 0.5rem;
+}
+
+.header-calendar {
+    font-weight: bold;
+    text-align: center;
+}
+
+.hour-calendar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    /* flex-wrap: nowrap; */
+}
+
+.active-card {
+    background-color: #3799ff;
+    color: var(--white);
+}
+
+@media(max-width: 600px) {
+    .container-body-calendar {
+        min-width: 550px;
+        overflow-x: auto;
+    }
+
+    .container-calendar {
+        min-width: 320px;
+        overflow-x: auto;
+    }
 }

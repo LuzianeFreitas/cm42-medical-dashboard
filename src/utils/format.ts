@@ -23,3 +23,29 @@ export const formatTime = (startTime: string, endTime: string | null) => {
 
     return statTimeFormat;
 }
+
+export const formatDateCalendar = (date: string) => {
+    let dateFormatted = date.replace('T', ' ').replace('.592Z', '');
+    return dateFormatted;
+}
+
+export const formatHourCalendar = (hour: number, min: number) => {
+    let newHour = "";
+    let newMinute = "";
+
+    if(hour >= 1 && hour <= 9) {
+        newHour = '0'+hour;
+    } else {
+        newHour = hour.toString();
+    }
+
+    if(min == 0) {
+        newMinute = '0'+ min;
+    } else {
+        newMinute = min.toString();
+    }
+
+    let hourFormat = newHour + ":" + newMinute;
+
+    return hourFormat;
+}

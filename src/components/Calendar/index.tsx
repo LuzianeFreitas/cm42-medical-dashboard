@@ -1,6 +1,6 @@
-import {isSameWeek,isSaturday,isSunday,getDay,isBefore, isAfter, startOfWeek,format,addDays, startOfMonth, endOfMonth,endOfWeek, subMonths, addMonths, isMonday, getHours, getMinutes} from "date-fns";
-import { useState } from "react";
+import {isSameWeek, isSaturday, isSunday, getDay, isBefore, isAfter, getHours, getMinutes} from "date-fns";
 import { useSchedule } from "../../hooks/useSchedule";
+import { formatDateCalendar, formatHourCalendar } from "../../utils/format";
 
 
 import "./style.css";
@@ -9,169 +9,71 @@ const Calendar = (): JSX.Element => {
     const { appointments } = useSchedule();
     const currentDate = new Date;
     
-    
-    const [currentMonth, setCurrentMonth] = useState(new Date());
-    const [selectedDate, setSelectedDate] = useState(new Date());
-
-
-    console.log(currentMonth);
-    
-    const showHeaderCalendar = () =>{
-        console.log(appointments);
-        const dateFormat = "MMMM yyyy";
-
-        return (
-            <div className="calendar-header row">
-               <div className="col" onClick={prevMonth}>
-                   anterior
-               </div>
-               <div className="col">
-                   {format(currentMonth, dateFormat)}
-               </div>
-               <div className="col" onClick={nextMonth}>
-                   próximo
-               </div>
-            </div>
-        );
-    }
-
-    const showDaysCalendar = () =>{
-        const dayFormat = "cccc";
-        const days = [];
-
-        let startDay = startOfWeek(currentMonth);
-        
-        for(let i = 0; i < 7; i++) {
-            days.push(
-            <div className="col" key={i}>
-                        {format(addDays(startDay,i),dayFormat)}
-                    </div>
-            );
-        }
-
-        console.log(days);
-        
-        return (
-            <div className="row">
-                {days}
-            </div>
-        );
-    }
-
-    const showHoursDay = () => {
-
-    }
-
-    const showCellsCalendar = () => {
-        const monthStart = startOfMonth(currentMonth);
-        const monthEnd = endOfMonth(monthStart);
-        const startDate = startOfWeek(monthStart);
-        const endDate = endOfWeek(monthEnd); 
-        
-        const cellFormat = "d";
-        const rows = [];
-
-        let days = [];
-        let day = startDate;
-        let formattedDate = "";
-
-        while(day <= endDate) {
-            for(let i = 0; i < 7; i++) {
-                formattedDate = format(day,cellFormat);
-                const auxDay = day;
-                days.push(
-                    <div className="col">
-                        {formattedDate}
-                    </div>
-                );
-                day = addDays(day,1);
-            }
-            rows.push(
-                <div className="row">
-                    {days}
-                </div>
-            );
-
-            days = [];
-        }
-
-        return <div>{rows}</div>;
-    }
-
-    const prevMonth = () => {
-        setCurrentMonth(subMonths(currentMonth,1));
-    }
-
-    const nextMonth = () => {
-        setCurrentMonth(addMonths(currentMonth,1))
-    }
 
     const renderCalendar = () => {
         let hour = 9;
         let min = 0;
         let calendarRow = [];
         let calendarCol = [];
-
-        
-        console.log(compareWeeks());
-
         let weeklyAppointments = compareWeeks();
         
         calendarRow.push(getHeaderCalendarDays());
-        for( let hourIndex = 0; hourIndex < 19; hourIndex++) {
+
+        for(let hourIndex = 0; hourIndex < 19; hourIndex++) {
             calendarCol.push(
-                <div className="col">
-                    { hour +':'+ min}
+                <div className="col hour-calendar">
+                    {formatHourCalendar(hour,min)}
                 </div>
-            )
+            );
+
             for(let dayIndex = 0; dayIndex < 5 ; dayIndex++) {
                 let appointment = "";
+
                 weeklyAppointments.forEach(element => {
-                    let dateFormatted = element.startTime.replace('T', ' ').replace('.592Z', '');
-                    
+                    let dateFormatted = formatDateCalendar(element.startTime);
                     let dateStart = new Date(dateFormatted);
-                    let currentDate = new Date(dateFormatted);
-                    currentDate.setHours(hour);
-                    currentDate.setMinutes(min);
+
+                    let currentDateWeekly = new Date(dateFormatted);
+                    currentDateWeekly.setHours(hour);
+                    currentDateWeekly.setMinutes(min);
                     
-                    if(getDay(dateStart) == dayIndex+1) {
-                        if(getHours(dateStart) == hour && getMinutes(dateStart) == min)
+                    let date = getDay(dateStart);
+
+                    if(date == dayIndex+1) {
+                        let hourAppointmentStart = getHours(dateStart);
+                        let minutesAppointmentStart = getMinutes(dateStart);
+
+                        if(hourAppointmentStart == hour && minutesAppointmentStart == min)
                             appointment = element.description
                         
-                        
                         if(element.endTime) {
-                            let dateEndFormatted = element.endTime.replace('T', ' ').replace('.592Z', '');
+                            let dateEndFormatted = formatDateCalendar(element.endTime)
                             let dateEnd = new Date(dateEndFormatted);
+                            let hourAppointmentEnd = getHours(dateEnd);
+                            let minuteAppointmentEnd = getMinutes(dateEnd);
+                            let intervalStart = isAfter(currentDateWeekly, dateStart);
+                            let intervalEnd = isBefore(currentDateWeekly, dateEnd);
 
-                            if(getHours(dateEnd) == hour && getMinutes(dateEnd) == min)
+                            if(hourAppointmentEnd == hour && minuteAppointmentEnd == min)
                                 appointment = element.description
 
-                            
-                            
-                            if(isAfter(currentDate, dateStart) && isBefore(currentDate, dateEnd)) {
+                            if(intervalStart && intervalEnd) 
                                 appointment = element.description
-                            }
                         }
                     }
-
-
                 })
 
                 calendarCol.push(
-                    <div className="col">
-                        <div className="cell">
-                        {                        
-                            appointment
-                        }
-                        </div>
-                </div>
-                )
+                    <div className={`col cell-calendar ${appointment.length > 0 ? 'active-card' : ''}`}>
+                        {appointment}
+                    </div>
+                );
             }
             calendarRow.push(
                 <div className="row">
                     {calendarCol}
                 </div>
-            )
+            );
             
             if(min == 0) {
                 min = 30;
@@ -180,28 +82,25 @@ const Calendar = (): JSX.Element => {
                 hour++;
             }
             calendarCol = [];
-
         }
 
-        return <div>{calendarRow}</div>
-        
+        return (<div className="container-body-calendar">{calendarRow}</div>);    
     }
 
     const getHeaderCalendarDays = () => {
         let daysWeek = [ '','Mon','Tue','Wed','Thu','Fri'];
-
         let headerWeek = [];
 
         for(let dayIndex = 0; dayIndex < 6 ; dayIndex++) {
             headerWeek.push(
-                <div className="col">
+                <div className="col" key={dayIndex}>
                     {daysWeek[dayIndex]}
                 </div>
-            )     
+            );     
         }
 
         return (
-            <div className="row">
+            <div className="row header-calendar">
                {headerWeek}
             </div>
         );
@@ -209,23 +108,21 @@ const Calendar = (): JSX.Element => {
 
     const compareWeeks = () => {
         return appointments?.filter(appointment => {
-            let dateAppointment = new Date(appointment.startTime)
+            let dateAppointment = new Date(appointment.startTime);
+
             const currentWeek = isSameWeek(dateAppointment,currentDate,{weekStartsOn: 1});
-            if(currentWeek && (!isSaturday(dateAppointment)) && (!isSunday(dateAppointment))) {
-                return true;
-            }
+            let isSaturdayDay = isSaturday(dateAppointment);
+            let isSundayDay = isSunday(dateAppointment);
+
+            if(currentWeek && !isSaturdayDay && !isSundayDay) return true;
 
             return false;
         })
     }
 
     return(
-        <div>
-            {showHeaderCalendar()}
-            {showDaysCalendar()}
-            {showHoursDay()}
-            {showCellsCalendar()}
-
+        <div className="container-calendar">
+            <h4>Calendar</h4>
             {renderCalendar()}
         </div>
     );
