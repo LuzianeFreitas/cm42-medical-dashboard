@@ -6,8 +6,6 @@
 - ReactJS
 - TypeScript
 
-<br>
-
 ## Build Setup
 
 ``` bash
