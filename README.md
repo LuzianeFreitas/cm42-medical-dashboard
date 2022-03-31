@@ -23,4 +23,7 @@ yarn start
 
 # build for production with minification
 yarn build
+
+# execute tests
+yarn test
 ```
